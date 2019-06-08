@@ -6,6 +6,21 @@ part of models;
 // JsonSerializableGenerator
 // **************************************************************************
 
+CustomFields _$CustomFieldsFromJson(Map<String, dynamic> json) {
+  return CustomFields()
+    ..anonymId =
+        json['anonym_id'] == null ? null : _tryParseInt(json['anonym_id'])
+    ..photoUrl = json['photoUrl'] as String
+    ..registeredAt = json['registeredAt'] as String;
+}
+
+Map<String, dynamic> _$CustomFieldsToJson(CustomFields instance) =>
+    <String, dynamic>{
+      'anonym_id': instance.anonymId,
+      'photoUrl': instance.photoUrl,
+      'registeredAt': instance.registeredAt
+    };
+
 Channel _$ChannelFromJson(Map<String, dynamic> json) {
   return Channel()
     ..id = json['_id'] as String
@@ -70,23 +85,39 @@ ChannelSubscription _$ChannelSubscriptionFromJson(Map<String, dynamic> json) {
         ? null
         : User.fromJson(json['u'] as Map<String, dynamic>)
     ..roles = (json['roles'] as List)?.map((e) => e as String)?.toList()
-    ..unread = json['unread'] as int;
+    ..unread = json['unread'] as int
+    ..timestamp = json['ts'] == null ? null : _fromJsonToDateTime(json['ts'])
+    ..lastSeen = json['ls'] == null ? null : _fromJsonToDateTime(json['ls'])
+    ..customFields = json['customFields'] == null
+        ? null
+        : CustomFields.fromJson(json['customFields'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$ChannelSubscriptionToJson(
-        ChannelSubscription instance) =>
-    <String, dynamic>{
-      '_id': instance.id,
-      'alert': instance.alert,
-      'name': instance.name,
-      'fname': instance.displayName,
-      'open': instance.open,
-      'rid': instance.roomId,
-      't': instance.type,
-      'u': instance.user,
-      'roles': instance.roles,
-      'unread': instance.unread
-    };
+Map<String, dynamic> _$ChannelSubscriptionToJson(ChannelSubscription instance) {
+  final val = <String, dynamic>{
+    '_id': instance.id,
+    'alert': instance.alert,
+    'name': instance.name,
+    'fname': instance.displayName,
+    'open': instance.open,
+    'rid': instance.roomId,
+    't': instance.type,
+    'u': instance.user,
+    'roles': instance.roles,
+    'unread': instance.unread,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('ts', instance.timestamp?.toIso8601String());
+  val['ls'] = instance.lastSeen?.toIso8601String();
+  val['customFields'] = instance.customFields;
+  return val;
+}
 
 Pagination _$PaginationFromJson(Map<String, dynamic> json) {
   return Pagination()

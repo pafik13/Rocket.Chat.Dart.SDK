@@ -90,6 +90,15 @@ class ChannelSubscription {
   @JsonKey(name: 'unread')
   int unread;
 
+  @JsonKey(name: 'ts', includeIfNull: false, fromJson: _fromJsonToDateTime)
+  DateTime timestamp;
+
+  @JsonKey(name: 'ls', includeIfNull: true, fromJson: _fromJsonToDateTime)
+  DateTime lastSeen;
+
+  @JsonKey(name: 'customFields', fromJson: _$CustomFieldsFromJson, toJson: _$CustomFieldsToJson)
+  CustomFields customFields;
+
   factory ChannelSubscription.fromJson(Map<String, dynamic> json) =>
       _$ChannelSubscriptionFromJson(json);
 
