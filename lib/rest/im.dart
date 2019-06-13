@@ -41,8 +41,8 @@ abstract class _ClientIMMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<Channel> createIM(String username) {
-    Completer<Channel> completer = Completer();
+  Future<Room> createIM(String username) {
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/im.create',
             headers: {
@@ -55,21 +55,21 @@ abstract class _ClientIMMixin implements _ClientWrapper {
             }))
         .then((response) {
       _hackResponseHeader(response);
-      final channel = Channel.fromJson(json.decode(response.body)['room']);
+      final channel = Room.fromJson(json.decode(response.body)['room']);
       completer.complete(channel);
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
-  Future<List<Channel>> listIMs() {
-    Completer<List<Channel>> completer = Completer();
+  Future<List<Room>> listIMs() {
+    Completer<List<Room>> completer = Completer();
     http.get('${_getUrl()}/im.list', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
     }).then((response) {
       _hackResponseHeader(response);
       final ims = json.decode(response.body)['ims'] as List;
-      final list = ims.map<Channel>((im) => Channel.fromJson(im)).toList();
+      final list = ims.map<Room>((im) => Room.fromJson(im)).toList();
       completer.complete(list);
     }).catchError((error) => completer.completeError(error));
     return completer.future;

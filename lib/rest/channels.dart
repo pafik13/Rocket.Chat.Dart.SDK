@@ -5,7 +5,7 @@ class ChannelsResponse {
   ChannelsResponse();
 
   @JsonKey(name: 'channels')
-  List<Channel> channels;
+  List<Room> channels;
 
   factory ChannelsResponse.fromJson(Map<String, dynamic> json) =>
       _$ChannelsResponseFromJson(json);
@@ -14,8 +14,8 @@ class ChannelsResponse {
 }
 
 abstract class _ClientChannelsMixin implements _ClientWrapper {
-  Future<List<Channel>> getPublicChannels() {
-    Completer<List<Channel>> completer = Completer();
+  Future<List<Room>> getPublicChannels() {
+    Completer<List<Room>> completer = Completer();
     http.get('${_getUrl()}/channels.list', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
@@ -28,8 +28,8 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<List<Channel>> getPublicChannelsJoined() {
-    Completer<List<Channel>> completer = Completer();
+  Future<List<Room>> getPublicChannelsJoined() {
+    Completer<List<Room>> completer = Completer();
     http.get('${_getUrl()}/channels.list.joined', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
@@ -42,12 +42,12 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<Channel> channelsCreate(
+  Future<Room> channelsCreate(
     String name, {
     List<String> members = const [],
     bool readOnly = false,
   }) {
-    Completer<Channel> completer = Completer();
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/channels.create',
             headers: {
@@ -63,7 +63,7 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
         .then((response) {
       _hackResponseHeader(response);
       completer
-          .complete(Channel.fromJson(json.decode(response.body)['channel']));
+          .complete(Room.fromJson(json.decode(response.body)['channel']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
@@ -108,8 +108,8 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<Channel> channelsInvite(String roomId, String userId) {
-    Completer<Channel> completer = Completer();
+  Future<Room> channelsInvite(String roomId, String userId) {
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/channels.invite',
             headers: {
@@ -124,13 +124,13 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
         .then((response) {
       _hackResponseHeader(response);
       completer
-          .complete(Channel.fromJson(json.decode(response.body)['channel']));
+          .complete(Room.fromJson(json.decode(response.body)['channel']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
-  Future<Channel> channelsKick(String roomId, String userId) {
-    Completer<Channel> completer = Completer();
+  Future<Room> channelsKick(String roomId, String userId) {
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/channels.kick',
             headers: {
@@ -145,7 +145,7 @@ abstract class _ClientChannelsMixin implements _ClientWrapper {
         .then((response) {
       _hackResponseHeader(response);
       completer
-          .complete(Channel.fromJson(json.decode(response.body)['channel']));
+          .complete(Room.fromJson(json.decode(response.body)['channel']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }

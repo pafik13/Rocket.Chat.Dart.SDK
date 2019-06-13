@@ -41,12 +41,12 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<Channel> groupsCreate(
+  Future<Room> groupsCreate(
     String name, {
     List<String> members = const [],
     bool readOnly = false,
   }) {
-    Completer<Channel> completer = Completer();
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/groups.create',
             headers: {
@@ -61,7 +61,7 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
             }))
         .then((response) {
       _hackResponseHeader(response);
-      completer.complete(Channel.fromJson(json.decode(response.body)['group']));
+      completer.complete(Room.fromJson(json.decode(response.body)['group']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
@@ -85,8 +85,8 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<Channel> groupsInvite(String roomId, String userId) {
-    Completer<Channel> completer = Completer();
+  Future<Room> groupsInvite(String roomId, String userId) {
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/groups.invite',
             headers: {
@@ -100,13 +100,13 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
             }))
         .then((response) {
       _hackResponseHeader(response);
-      completer.complete(Channel.fromJson(json.decode(response.body)['group']));
+      completer.complete(Room.fromJson(json.decode(response.body)['group']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
-  Future<Channel> groupsKick(String roomId, String userId) {
-    Completer<Channel> completer = Completer();
+  Future<Room> groupsKick(String roomId, String userId) {
+    Completer<Room> completer = Completer();
     http
         .post('${_getUrl()}/groups.kick',
             headers: {
@@ -120,7 +120,7 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
             }))
         .then((response) {
       _hackResponseHeader(response);
-      completer.complete(Channel.fromJson(json.decode(response.body)['group']));
+      completer.complete(Room.fromJson(json.decode(response.body)['group']));
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
@@ -171,15 +171,15 @@ abstract class _ClientGroupsMixin implements _ClientWrapper {
     return completer.future;
   }
 
-  Future<List<Channel>> listGroups() {
-    Completer<List<Channel>> completer = Completer();
+  Future<List<Room>> listGroups() {
+    Completer<List<Room>> completer = Completer();
     http.get('${_getUrl()}/groups.list', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
     }).then((response) {
       _hackResponseHeader(response);
       final ims = json.decode(response.body)['groups'] as List;
-      final list = ims.map<Channel>((im) => Channel.fromJson(im)).toList();
+      final list = ims.map<Room>((im) => Room.fromJson(im)).toList();
       completer.complete(list);
     }).catchError((error) => completer.completeError(error));
     return completer.future;

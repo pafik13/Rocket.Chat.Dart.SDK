@@ -26,3 +26,18 @@ class User {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
+
+@JsonSerializable()
+class UsernameAndId {
+  UsernameAndId();
+
+  @JsonKey(name: '_id')
+  String id;
+
+  @JsonKey(name: 'username')
+  String userName;
+
+  factory UsernameAndId.fromJson(Map<String, dynamic> json) => _$UsernameAndIdFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UsernameAndIdToJson(this);
+}

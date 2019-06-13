@@ -1,8 +1,8 @@
 part of models;
 
 @JsonSerializable()
-class Channel {
-  Channel();
+class Room {
+  Room();
 
   @JsonKey(name: '_id')
   String id;
@@ -34,11 +34,7 @@ class Channel {
   @JsonKey(name: 'ts', includeIfNull: false, fromJson: _fromJsonToDateTime)
   DateTime timestamp;
 
-  @JsonKey(
-    name: '_updatedAt',
-    includeIfNull: false,
-    fromJson: _fromJsonToDateTime,
-  )
+  @JsonKey(name: '_updatedAt', includeIfNull: false,fromJson: _fromJsonToDateTime)
   DateTime updatedAt;
 
   @JsonKey(name: 'topic')
@@ -50,10 +46,10 @@ class Channel {
   @JsonKey(name: 'lastMessage', includeIfNull: false)
   Message lastMessage;
 
-  factory Channel.fromJson(Map<String, dynamic> json) =>
-      _$ChannelFromJson(json);
+  factory Room.fromJson(Map<String, dynamic> json) =>
+      _$RoomFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChannelToJson(this);
+  Map<String, dynamic> toJson() => _$RoomToJson(this);
 }
 
 @JsonSerializable()

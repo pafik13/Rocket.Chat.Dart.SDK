@@ -53,15 +53,15 @@ abstract class _ClientSubscriptionsMixin implements _DdpClientWrapper {
     return controller.stream;
   }
 
-  Stream<Channel> roomsChanged() {
-    StreamController<Channel> controller = StreamController();
+  Stream<Room> roomsChanged() {
+    StreamController<Room> controller = StreamController();
     this
         ._getDdpClient()
         .collectionByName('stream-notify-user')
         .addUpdateListener((collection, opeartion, id, doc) {
       if (doc['eventName'].endsWith('rooms-changed')) {
         print(doc['args']);
-        controller.add(Channel.fromJson(doc['args'][1]));
+        controller.add(Room.fromJson(doc['args'][1]));
       }
     });
     return controller.stream;

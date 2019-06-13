@@ -10,7 +10,7 @@ ChannelsResponse _$ChannelsResponseFromJson(Map<String, dynamic> json) {
   return ChannelsResponse()
     ..channels = (json['channels'] as List)
         ?.map((e) =>
-            e == null ? null : Channel.fromJson(e as Map<String, dynamic>))
+            e == null ? null : Room.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

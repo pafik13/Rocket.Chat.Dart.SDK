@@ -21,8 +21,8 @@ Map<String, dynamic> _$CustomFieldsToJson(CustomFields instance) =>
       'registeredAt': instance.registeredAt
     };
 
-Channel _$ChannelFromJson(Map<String, dynamic> json) {
-  return Channel()
+Room _$RoomFromJson(Map<String, dynamic> json) {
+  return Room()
     ..id = json['_id'] as String
     ..name = json['name'] as String
     ..fName = json['fname'] as String
@@ -45,7 +45,7 @@ Channel _$ChannelFromJson(Map<String, dynamic> json) {
         : Message.fromJson(json['lastMessage'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$ChannelToJson(Channel instance) {
+Map<String, dynamic> _$RoomToJson(Room instance) {
   final val = <String, dynamic>{
     '_id': instance.id,
     'name': instance.name,
@@ -153,11 +153,12 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
     ..id = json['_id'] as String
     ..roomId = json['rid'] as String
     ..msg = json['msg'] as String
-    ..editedBy = json['editedBy'] as String
-    ..groupable = json['groupable'] as bool
-    ..editedAt = json['editedAt'] == null
+    ..editedBy = json['editedBy'] == null
         ? null
-        : DateTime.parse(json['editedAt'] as String)
+        : UsernameAndId.fromJson(json['editedBy'] as Map<String, dynamic>)
+    ..groupable = json['groupable'] as bool
+    ..editedAt =
+        json['editedAt'] == null ? null : _fromJsonToDateTime(json['editedAt'])
     ..timestamp = json['ts'] == null ? null : _fromJsonToDateTime(json['ts'])
     ..type = json['t'] as String
     ..updatedAt = json['_updatedAt'] == null
@@ -340,3 +341,12 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'token': instance.token,
       'tokenExpires': instance.tokenExpires
     };
+
+UsernameAndId _$UsernameAndIdFromJson(Map<String, dynamic> json) {
+  return UsernameAndId()
+    ..id = json['_id'] as String
+    ..userName = json['username'] as String;
+}
+
+Map<String, dynamic> _$UsernameAndIdToJson(UsernameAndId instance) =>
+    <String, dynamic>{'_id': instance.id, 'username': instance.userName};

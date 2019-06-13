@@ -11,14 +11,14 @@ abstract class _ClientChannelsMixin implements _DdpClientWrapper {
     return completer.future;
   }
 
-  Future<List<Channel>> getChannelsIn() {
-    Completer<List<Channel>> completer = Completer();
+  Future<List<Room>> getChannelsIn() {
+    Completer<List<Room>> completer = Completer();
     this._getDdpClient().call('rooms/get', [
       <String, dynamic>{"\$date": 0}
     ]).then((call) {
-      List<Channel> channels = [];
+      List<Room> channels = [];
       (call.reply['update'] as List<dynamic>).forEach((chan) => channels.add(
-          Channel()
+          Room()
             ..id = '${chan['_id']}'
             ..name = '${chan['name']}'
             ..type = '${chan['t']}'
