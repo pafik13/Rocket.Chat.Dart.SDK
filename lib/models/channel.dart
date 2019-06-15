@@ -1,19 +1,27 @@
 part of models;
 
+/// The room model for RocketChat
 @JsonSerializable()
 class Room {
   Room();
 
+  /// The identifier for room.
+  /// 
+  /// Generates by Meteor.Random() and has length equal 17.
   @JsonKey(name: '_id')
   String id;
 
+  /// The name of room (unique)
   @JsonKey(name: 'name')
+  // @SqlKey(name: 'name')
   String name;
 
   @JsonKey(name: 'fname', includeIfNull: false)
   String fName;
 
+
   @JsonKey(name: 't')
+  // @SqlKey(name: 'type', includeIfNull: false, fromJson: _fromJsonToDateTime)
   String type;
 
   @JsonKey(name: 'msgs')
