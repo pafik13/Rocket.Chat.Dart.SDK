@@ -1,4 +1,5 @@
 import 'package:ddp/ddp.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
 import 'package:rocket_chat_dart/models/models.dart';
 import 'package:rocket_chat_dart/realtime/client.dart';
 import 'package:test/test.dart';
@@ -20,6 +21,11 @@ void main() {
           ..password = 'apianon!123');
         
         final subscriptions = await client.getChannelSubscriptions();
+        final bean = ChannelSubscriptionBean(null);
+        bean.createTable();
+        subscriptions.forEach((val){
+          bean.insert(val);
+        });
         final channels = await client.getChannelsIn();
         channels.forEach((channel) {
           client.subRoomMessages(channel.id);

@@ -5,6 +5,7 @@ class User {
   User();
 
   @JsonKey(name: '_id')
+  @PrimaryKey()
   String id;
 
   @JsonKey(name: 'name')
@@ -21,6 +22,11 @@ class User {
 
   @JsonKey(name: 'tokenExpires')
   int tokenExpires;
+
+  @BelongsTo(RoomBean)
+  String roomId;
+
+  String toString() => "User($id, $name)";
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

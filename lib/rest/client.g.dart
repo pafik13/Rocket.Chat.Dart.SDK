@@ -9,8 +9,8 @@ part of rest;
 ChannelsResponse _$ChannelsResponseFromJson(Map<String, dynamic> json) {
   return ChannelsResponse()
     ..channels = (json['channels'] as List)
-        ?.map((e) =>
-            e == null ? null : Room.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Room.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

@@ -1,5 +1,9 @@
 part of models;
 
+enum RoomType {
+  channel, direct, group
+}
+
 /// The room model for RocketChat
 @JsonSerializable()
 class Room {
@@ -9,6 +13,7 @@ class Room {
   /// 
   /// Generates by Meteor.Random() and has length equal 17.
   @JsonKey(name: '_id')
+  @PrimaryKey()
   String id;
 
   /// The name of room (unique)
@@ -22,6 +27,8 @@ class Room {
 
   @JsonKey(name: 't')
   // @SqlKey(name: 'type', includeIfNull: false, fromJson: _fromJsonToDateTime)
+  // @IgnoreColumn()
+  // RoomType type;
   String type;
 
   @JsonKey(name: 'msgs')
@@ -49,10 +56,14 @@ class Room {
   String topic;
 
   @JsonKey(name: 'u', includeIfNull: false)
+  @HasOne(UserBean)
   User user;
 
   @JsonKey(name: 'lastMessage', includeIfNull: false)
+  @IgnoreColumn()
   Message lastMessage;
+
+  String toString() => "Room($id, $name)";
 
   factory Room.fromJson(Map<String, dynamic> json) =>
       _$RoomFromJson(json);
@@ -65,6 +76,7 @@ class ChannelSubscription {
   ChannelSubscription();
 
   @JsonKey(name: '_id')
+  @PrimaryKey()
   String id;
 
   @JsonKey(name: 'alert')
@@ -74,6 +86,7 @@ class ChannelSubscription {
   String name;
 
   @JsonKey(name: 'fname')
+  @Column(name: 'display_name', isNullable: true, length: 255)
   String displayName;
 
   @JsonKey(name: 'open')
@@ -86,9 +99,11 @@ class ChannelSubscription {
   String type;
 
   @JsonKey(name: 'u')
+  @IgnoreColumn()
   User user;
 
   @JsonKey(name: 'roles')
+  @IgnoreColumn()
   List<String> roles;
 
   @JsonKey(name: 'unread')
@@ -101,7 +116,10 @@ class ChannelSubscription {
   DateTime lastSeen;
 
   @JsonKey(name: 'customFields', fromJson: _$CustomFieldsFromJson, toJson: _$CustomFieldsToJson)
+  @IgnoreColumn()
   CustomFields customFields;
+
+  String toString() => "ChannelSubscription($id, $name)";
 
   factory ChannelSubscription.fromJson(Map<String, dynamic> json) =>
       _$ChannelSubscriptionFromJson(json);
