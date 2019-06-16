@@ -15,16 +15,19 @@ class User {
   String userName;
 
   @JsonKey(name: 'status')
+  @IgnoreColumn()
   String status;
 
   @JsonKey(name: 'token')
+  @IgnoreColumn()
   String token;
 
   @JsonKey(name: 'tokenExpires')
+  @IgnoreColumn()
   int tokenExpires;
 
-  @BelongsTo(RoomBean)
-  String roomId;
+  // @BelongsTo(RoomBean)
+  // String roomId;
 
   String toString() => "User($id, $name)";
 

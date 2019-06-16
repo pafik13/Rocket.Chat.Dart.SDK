@@ -19,9 +19,11 @@ class Room {
   /// The name of room (unique)
   @JsonKey(name: 'name')
   // @SqlKey(name: 'name')
+  @Column(isNullable: true)
   String name;
 
   @JsonKey(name: 'fname', includeIfNull: false)
+  @Column(isNullable: true)
   String fName;
 
 
@@ -32,36 +34,68 @@ class Room {
   String type;
 
   @JsonKey(name: 'msgs')
+  @Column(isNullable: true)
   int msgs;
 
   @JsonKey(name: 'ro', includeIfNull: false)
+  @Column(isNullable: true)
   bool readOnly;
 
   @JsonKey(name: 'sysMes', includeIfNull: false)
+  @Column(isNullable: true)
   bool sysMes;
 
   @JsonKey(name: 'default')
+  @Column(isNullable: true)
   bool isDefault;
 
   @JsonKey(name: 'broadcast', includeIfNull: false)
+  @Column(isNullable: true)
   bool broadcast;
 
   @JsonKey(name: 'ts', includeIfNull: false, fromJson: _fromJsonToDateTime)
+  @Column(isNullable: true)
   DateTime timestamp;
 
   @JsonKey(name: '_updatedAt', includeIfNull: false,fromJson: _fromJsonToDateTime)
   DateTime updatedAt;
 
   @JsonKey(name: 'topic')
+  @Column(isNullable: true)
   String topic;
 
+  /// The User
+  @JsonKey(ignore: true)
+  @Column(isNullable: true, length: 17)
+  String get userId {
+    return user?.id;
+  }
+  void set userId(String str) {
+    if (user != null) throw Exception('user must be null');
+    user = User()
+      ..id = str;
+  }
+
   @JsonKey(name: 'u', includeIfNull: false)
-  @HasOne(UserBean)
+  @IgnoreColumn()
   User user;
+
+  /// The LastMessage
+  @JsonKey(ignore: true)
+  @Column(isNullable: true, length: 32)
+  String get lastMessageId {
+    return lastMessage?.id;
+  }
+  void set lastMessageId(String str) {
+    if (lastMessage != null) throw Exception('lastMessage must be null');
+    lastMessage = Message()
+      ..id = str;
+  }
 
   @JsonKey(name: 'lastMessage', includeIfNull: false)
   @IgnoreColumn()
   Message lastMessage;
+
 
   String toString() => "Room($id, $name)";
 
@@ -98,6 +132,18 @@ class ChannelSubscription {
   @JsonKey(name: 't')
   String type;
 
+  /// The User
+  @JsonKey(ignore: true)
+  @Column(isNullable: true, length: 17)
+  String get userId {
+    return user?.id;
+  }
+  void set userId(String str) {
+    if (user != null) throw Exception('user must be null');
+    user = User()
+      ..id = str;
+  }
+
   @JsonKey(name: 'u')
   @IgnoreColumn()
   User user;
@@ -113,6 +159,7 @@ class ChannelSubscription {
   DateTime timestamp;
 
   @JsonKey(name: 'ls', includeIfNull: true, fromJson: _fromJsonToDateTime)
+  @Column(isNullable: true)
   DateTime lastSeen;
 
   @JsonKey(name: 'customFields', fromJson: _$CustomFieldsFromJson, toJson: _$CustomFieldsToJson)

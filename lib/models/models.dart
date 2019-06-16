@@ -45,16 +45,14 @@ Map<String, int> DateTimeToMap(DateTime dt) {
 class UserBean extends Bean<User> with _UserBean {
   UserBean(Adapter adapter) : super(adapter);
 
-  RoomBean get roomBean => this.roomBean;
-  String get tableName => 'simple_user';
+  String get tableName => 'users';
 }
 
 @GenBean()
 class RoomBean extends Bean<Room> with _RoomBean {
   RoomBean(Adapter adapter) : super(adapter);
 
-  UserBean get userBean => this.userBean;
-  String get tableName => 'simple_user';
+  String get tableName => 'rooms';
 }
 
 @GenBean()

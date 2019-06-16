@@ -10,29 +10,17 @@ abstract class _UserBean implements Bean<User> {
   final id = StrField('id');
   final name = StrField('name');
   final userName = StrField('user_name');
-  final status = StrField('status');
-  final token = StrField('token');
-  final tokenExpires = IntField('token_expires');
-  final roomId = StrField('room_id');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
         name.name: name,
         userName.name: userName,
-        status.name: status,
-        token.name: token,
-        tokenExpires.name: tokenExpires,
-        roomId.name: roomId,
       };
   User fromMap(Map map) {
     User model = User();
     model.id = adapter.parseValue(map['id']);
     model.name = adapter.parseValue(map['name']);
     model.userName = adapter.parseValue(map['user_name']);
-    model.status = adapter.parseValue(map['status']);
-    model.token = adapter.parseValue(map['token']);
-    model.tokenExpires = adapter.parseValue(map['token_expires']);
-    model.roomId = adapter.parseValue(map['room_id']);
 
     return model;
   }
@@ -45,19 +33,10 @@ abstract class _UserBean implements Bean<User> {
       ret.add(id.set(model.id));
       ret.add(name.set(model.name));
       ret.add(userName.set(model.userName));
-      ret.add(status.set(model.status));
-      ret.add(token.set(model.token));
-      ret.add(tokenExpires.set(model.tokenExpires));
-      ret.add(roomId.set(model.roomId));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(name.name)) ret.add(name.set(model.name));
       if (only.contains(userName.name)) ret.add(userName.set(model.userName));
-      if (only.contains(status.name)) ret.add(status.set(model.status));
-      if (only.contains(token.name)) ret.add(token.set(model.token));
-      if (only.contains(tokenExpires.name))
-        ret.add(tokenExpires.set(model.tokenExpires));
-      if (only.contains(roomId.name)) ret.add(roomId.set(model.roomId));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -67,18 +46,6 @@ abstract class _UserBean implements Bean<User> {
       }
       if (model.userName != null) {
         ret.add(userName.set(model.userName));
-      }
-      if (model.status != null) {
-        ret.add(status.set(model.status));
-      }
-      if (model.token != null) {
-        ret.add(token.set(model.token));
-      }
-      if (model.tokenExpires != null) {
-        ret.add(tokenExpires.set(model.tokenExpires));
-      }
-      if (model.roomId != null) {
-        ret.add(roomId.set(model.roomId));
       }
     }
 
@@ -90,11 +57,6 @@ abstract class _UserBean implements Bean<User> {
     st.addStr(id.name, primary: true, isNullable: false);
     st.addStr(name.name, isNullable: false);
     st.addStr(userName.name, isNullable: false);
-    st.addStr(status.name, isNullable: false);
-    st.addStr(token.name, isNullable: false);
-    st.addInt(tokenExpires.name, isNullable: false);
-    st.addStr(roomId.name,
-        foreignTable: roomBean.tableName, foreignCol: 'id', isNullable: false);
     return adapter.createTable(st);
   }
 
@@ -186,34 +148,6 @@ abstract class _UserBean implements Bean<User> {
     }
     return adapter.remove(remove);
   }
-
-  Future<User> findByRoom(String roomId,
-      {bool preload = false, bool cascade = false}) async {
-    final Find find = finder.where(this.roomId.eq(roomId));
-    return findOne(find);
-  }
-
-  Future<List<User>> findByRoomList(List<Room> models,
-      {bool preload = false, bool cascade = false}) async {
-// Return if models is empty. If this is not done, all the records will be returned!
-    if (models == null || models.isEmpty) return [];
-    final Find find = finder;
-    for (Room model in models) {
-      find.or(this.roomId.eq(model.id));
-    }
-    return findMany(find);
-  }
-
-  Future<int> removeByRoom(String roomId) async {
-    final Remove rm = remover.where(this.roomId.eq(roomId));
-    return await adapter.remove(rm);
-  }
-
-  void associateRoom(User child, Room parent) {
-    child.roomId = parent.id;
-  }
-
-  RoomBean get roomBean;
 }
 
 abstract class _RoomBean implements Bean<Room> {
@@ -229,6 +163,8 @@ abstract class _RoomBean implements Bean<Room> {
   final timestamp = DateTimeField('timestamp');
   final updatedAt = DateTimeField('updated_at');
   final topic = StrField('topic');
+  final userId = StrField('user_id');
+  final lastMessageId = StrField('last_message_id');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
@@ -243,6 +179,8 @@ abstract class _RoomBean implements Bean<Room> {
         timestamp.name: timestamp,
         updatedAt.name: updatedAt,
         topic.name: topic,
+        userId.name: userId,
+        lastMessageId.name: lastMessageId,
       };
   Room fromMap(Map map) {
     Room model = Room();
@@ -258,6 +196,8 @@ abstract class _RoomBean implements Bean<Room> {
     model.timestamp = adapter.parseValue(map['timestamp']);
     model.updatedAt = adapter.parseValue(map['updated_at']);
     model.topic = adapter.parseValue(map['topic']);
+    model.userId = adapter.parseValue(map['user_id']);
+    model.lastMessageId = adapter.parseValue(map['last_message_id']);
 
     return model;
   }
@@ -279,6 +219,8 @@ abstract class _RoomBean implements Bean<Room> {
       ret.add(timestamp.set(model.timestamp));
       ret.add(updatedAt.set(model.updatedAt));
       ret.add(topic.set(model.topic));
+      ret.add(userId.set(model.userId));
+      ret.add(lastMessageId.set(model.lastMessageId));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(name.name)) ret.add(name.set(model.name));
@@ -296,6 +238,9 @@ abstract class _RoomBean implements Bean<Room> {
       if (only.contains(updatedAt.name))
         ret.add(updatedAt.set(model.updatedAt));
       if (only.contains(topic.name)) ret.add(topic.set(model.topic));
+      if (only.contains(userId.name)) ret.add(userId.set(model.userId));
+      if (only.contains(lastMessageId.name))
+        ret.add(lastMessageId.set(model.lastMessageId));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -333,6 +278,12 @@ abstract class _RoomBean implements Bean<Room> {
       if (model.topic != null) {
         ret.add(topic.set(model.topic));
       }
+      if (model.userId != null) {
+        ret.add(userId.set(model.userId));
+      }
+      if (model.lastMessageId != null) {
+        ret.add(lastMessageId.set(model.lastMessageId));
+      }
     }
 
     return ret;
@@ -341,17 +292,19 @@ abstract class _RoomBean implements Bean<Room> {
   Future<void> createTable({bool ifNotExists = false}) async {
     final st = Sql.create(tableName, ifNotExists: ifNotExists);
     st.addStr(id.name, primary: true, isNullable: false);
-    st.addStr(name.name, isNullable: false);
-    st.addStr(fName.name, isNullable: false);
+    st.addStr(name.name, isNullable: true);
+    st.addStr(fName.name, isNullable: true);
     st.addStr(type.name, isNullable: false);
-    st.addInt(msgs.name, isNullable: false);
-    st.addBool(readOnly.name, isNullable: false);
-    st.addBool(sysMes.name, isNullable: false);
-    st.addBool(isDefault.name, isNullable: false);
-    st.addBool(broadcast.name, isNullable: false);
-    st.addDateTime(timestamp.name, isNullable: false);
+    st.addInt(msgs.name, isNullable: true);
+    st.addBool(readOnly.name, isNullable: true);
+    st.addBool(sysMes.name, isNullable: true);
+    st.addBool(isDefault.name, isNullable: true);
+    st.addBool(broadcast.name, isNullable: true);
+    st.addDateTime(timestamp.name, isNullable: true);
     st.addDateTime(updatedAt.name, isNullable: false);
-    st.addStr(topic.name, isNullable: false);
+    st.addStr(topic.name, isNullable: true);
+    st.addStr(userId.name, isNullable: false);
+    st.addStr(lastMessageId.name, isNullable: false);
     return adapter.createTable(st);
   }
 
@@ -361,38 +314,18 @@ abstract class _RoomBean implements Bean<Room> {
       Set<String> only}) async {
     final Insert insert = inserter
         .setMany(toSetColumns(model, only: only, onlyNonNull: onlyNonNull));
-    var retId = await adapter.insert(insert);
-    if (cascade) {
-      Room newModel;
-      if (model.user != null) {
-        newModel ??= await find(model.id);
-        userBean.associateRoom(model.user, newModel);
-        await userBean.insert(model.user, cascade: cascade);
-      }
-    }
-    return retId;
+    return adapter.insert(insert);
   }
 
   Future<void> insertMany(List<Room> models,
-      {bool cascade = false,
-      bool onlyNonNull = false,
-      Set<String> only}) async {
-    if (cascade) {
-      final List<Future> futures = [];
-      for (var model in models) {
-        futures.add(insert(model, cascade: cascade));
-      }
-      await Future.wait(futures);
-      return;
-    } else {
-      final List<List<SetColumn>> data = models
-          .map((model) =>
-              toSetColumns(model, only: only, onlyNonNull: onlyNonNull))
-          .toList();
-      final InsertMany insert = inserters.addAll(data);
-      await adapter.insertMany(insert);
-      return;
-    }
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = models
+        .map((model) =>
+            toSetColumns(model, only: only, onlyNonNull: onlyNonNull))
+        .toList();
+    final InsertMany insert = inserters.addAll(data);
+    await adapter.insertMany(insert);
+    return;
   }
 
   Future<dynamic> upsert(Room model,
@@ -401,40 +334,20 @@ abstract class _RoomBean implements Bean<Room> {
       bool onlyNonNull = false}) async {
     final Upsert upsert = upserter
         .setMany(toSetColumns(model, only: only, onlyNonNull: onlyNonNull));
-    var retId = await adapter.upsert(upsert);
-    if (cascade) {
-      Room newModel;
-      if (model.user != null) {
-        newModel ??= await find(model.id);
-        userBean.associateRoom(model.user, newModel);
-        await userBean.upsert(model.user, cascade: cascade);
-      }
-    }
-    return retId;
+    return adapter.upsert(upsert);
   }
 
   Future<void> upsertMany(List<Room> models,
-      {bool cascade = false,
-      bool onlyNonNull = false,
-      Set<String> only}) async {
-    if (cascade) {
-      final List<Future> futures = [];
-      for (var model in models) {
-        futures.add(upsert(model, cascade: cascade));
-      }
-      await Future.wait(futures);
-      return;
-    } else {
-      final List<List<SetColumn>> data = [];
-      for (var i = 0; i < models.length; ++i) {
-        var model = models[i];
-        data.add(
-            toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
-      }
-      final UpsertMany upsert = upserters.addAll(data);
-      await adapter.upsertMany(upsert);
-      return;
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = [];
+    for (var i = 0; i < models.length; ++i) {
+      var model = models[i];
+      data.add(
+          toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
     }
+    final UpsertMany upsert = upserters.addAll(data);
+    await adapter.upsertMany(upsert);
+    return;
   }
 
   Future<int> update(Room model,
@@ -445,64 +358,31 @@ abstract class _RoomBean implements Bean<Room> {
     final Update update = updater
         .where(this.id.eq(model.id))
         .setMany(toSetColumns(model, only: only, onlyNonNull: onlyNonNull));
-    final ret = adapter.update(update);
-    if (cascade) {
-      Room newModel;
-      if (model.user != null) {
-        if (associate) {
-          newModel ??= await find(model.id);
-          userBean.associateRoom(model.user, newModel);
-        }
-        await userBean.update(model.user,
-            cascade: cascade, associate: associate);
-      }
-    }
-    return ret;
+    return adapter.update(update);
   }
 
   Future<void> updateMany(List<Room> models,
-      {bool cascade = false,
-      bool onlyNonNull = false,
-      Set<String> only}) async {
-    if (cascade) {
-      final List<Future> futures = [];
-      for (var model in models) {
-        futures.add(update(model, cascade: cascade));
-      }
-      await Future.wait(futures);
-      return;
-    } else {
-      final List<List<SetColumn>> data = [];
-      final List<Expression> where = [];
-      for (var i = 0; i < models.length; ++i) {
-        var model = models[i];
-        data.add(
-            toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
-        where.add(this.id.eq(model.id));
-      }
-      final UpdateMany update = updaters.addAll(data, where);
-      await adapter.updateMany(update);
-      return;
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = [];
+    final List<Expression> where = [];
+    for (var i = 0; i < models.length; ++i) {
+      var model = models[i];
+      data.add(
+          toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
+      where.add(this.id.eq(model.id));
     }
+    final UpdateMany update = updaters.addAll(data, where);
+    await adapter.updateMany(update);
+    return;
   }
 
   Future<Room> find(String id,
       {bool preload = false, bool cascade = false}) async {
     final Find find = finder.where(this.id.eq(id));
-    final Room model = await findOne(find);
-    if (preload && model != null) {
-      await this.preload(model, cascade: cascade);
-    }
-    return model;
+    return await findOne(find);
   }
 
-  Future<int> remove(String id, {bool cascade = false}) async {
-    if (cascade) {
-      final Room newModel = await find(id);
-      if (newModel != null) {
-        await userBean.removeByRoom(newModel.id);
-      }
-    }
+  Future<int> remove(String id) async {
     final Remove remove = remover.where(this.id.eq(id));
     return adapter.remove(remove);
   }
@@ -516,26 +396,6 @@ abstract class _RoomBean implements Bean<Room> {
     }
     return adapter.remove(remove);
   }
-
-  Future<Room> preload(Room model, {bool cascade = false}) async {
-    model.user =
-        await userBean.findByRoom(model.id, preload: cascade, cascade: cascade);
-    return model;
-  }
-
-  Future<List<Room>> preloadAll(List<Room> models,
-      {bool cascade = false}) async {
-    await OneToXHelper.preloadAll<Room, User>(
-        models,
-        (Room model) => [model.id],
-        userBean.findByRoomList,
-        (User model) => [model.roomId],
-        (Room model, User child) => model.user = child,
-        cascade: cascade);
-    return models;
-  }
-
-  UserBean get userBean;
 }
 
 abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
@@ -549,6 +409,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
   final unread = IntField('unread');
   final timestamp = DateTimeField('timestamp');
   final lastSeen = DateTimeField('last_seen');
+  final userId = StrField('user_id');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
@@ -561,6 +422,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         unread.name: unread,
         timestamp.name: timestamp,
         lastSeen.name: lastSeen,
+        userId.name: userId,
       };
   ChannelSubscription fromMap(Map map) {
     ChannelSubscription model = ChannelSubscription();
@@ -574,6 +436,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     model.unread = adapter.parseValue(map['unread']);
     model.timestamp = adapter.parseValue(map['timestamp']);
     model.lastSeen = adapter.parseValue(map['last_seen']);
+    model.userId = adapter.parseValue(map['user_id']);
 
     return model;
   }
@@ -593,6 +456,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       ret.add(unread.set(model.unread));
       ret.add(timestamp.set(model.timestamp));
       ret.add(lastSeen.set(model.lastSeen));
+      ret.add(userId.set(model.userId));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(alert.name)) ret.add(alert.set(model.alert));
@@ -606,6 +470,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       if (only.contains(timestamp.name))
         ret.add(timestamp.set(model.timestamp));
       if (only.contains(lastSeen.name)) ret.add(lastSeen.set(model.lastSeen));
+      if (only.contains(userId.name)) ret.add(userId.set(model.userId));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -637,6 +502,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       if (model.lastSeen != null) {
         ret.add(lastSeen.set(model.lastSeen));
       }
+      if (model.userId != null) {
+        ret.add(userId.set(model.userId));
+      }
     }
 
     return ret;
@@ -647,13 +515,14 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     st.addStr(id.name, primary: true, isNullable: false);
     st.addBool(alert.name, isNullable: false);
     st.addStr(name.name, isNullable: false);
-    st.addStr(displayName.name, isNullable: true);
+    st.addStr(displayName.name, length: 255, isNullable: true);
     st.addBool(open.name, isNullable: false);
     st.addStr(roomId.name, isNullable: false);
     st.addStr(type.name, isNullable: false);
     st.addInt(unread.name, isNullable: false);
     st.addDateTime(timestamp.name, isNullable: false);
-    st.addDateTime(lastSeen.name, isNullable: false);
+    st.addDateTime(lastSeen.name, isNullable: true);
+    st.addStr(userId.name, isNullable: false);
     return adapter.createTable(st);
   }
 
