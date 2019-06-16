@@ -143,6 +143,12 @@ class ChannelSubscription {
     user = User()
       ..id = str;
   }
+  
+  @JsonKey(ignore: true)
+  @IgnoreColumn()
+  bool get isUserReady {
+    return user != null && !isNullOrEmtpy(user.id) && !isNullOrEmtpy(user.userName);
+  }
 
   @JsonKey(name: 'u')
   @IgnoreColumn()

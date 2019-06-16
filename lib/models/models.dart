@@ -13,6 +13,10 @@ part 'permissons.dart';
 part 'user.dart';
 part 'user_credentials.dart';
 
+bool isNullOrEmtpy(String str){
+   return str == null || str == "";
+}
+
 int _tryParseInt(dynamic field) {
   if (field.runtimeType == String) {
     return int.tryParse(field);
