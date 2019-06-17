@@ -65,3 +65,11 @@ class ChannelSubscriptionBean extends Bean<ChannelSubscription> with _ChannelSub
 
   String get tableName => 'subscriptions';
 }
+
+@GenBean()
+class CustomFieldsBean extends Bean<CustomFields> with _CustomFieldsBean {
+  CustomFieldsBean(Adapter adapter) : super(adapter);
+
+  String get tableName => 'custom_fields';
+}
+

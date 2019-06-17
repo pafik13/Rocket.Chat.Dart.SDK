@@ -10,17 +10,27 @@ abstract class _UserBean implements Bean<User> {
   final id = StrField('id');
   final name = StrField('name');
   final userName = StrField('user_name');
+  final customFields_anonymId = IntField('custom_fields__anonym_id');
+  final customFields_photoUrl = StrField('custom_fields__photo_url');
+  final customFields_registeredAt = StrField('custom_fields__registered_at');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
         name.name: name,
         userName.name: userName,
+        customFields_anonymId.name: customFields_anonymId,
+        customFields_photoUrl.name: customFields_photoUrl,
+        customFields_registeredAt.name: customFields_registeredAt,
       };
   User fromMap(Map map) {
     User model = User();
     model.id = adapter.parseValue(map['id']);
     model.name = adapter.parseValue(map['name']);
     model.userName = adapter.parseValue(map['user_name']);
+    model.customFields = CustomFields();
+    model.customFields.anonymId = adapter.parseValue(map['custom_fields__anonym_id']);
+    model.customFields.photoUrl = adapter.parseValue(map['custom_fields__photo_url']);
+    model.customFields.registeredAt = adapter.parseValue(map['custom_fields__registered_at']);
 
     return model;
   }
@@ -33,10 +43,16 @@ abstract class _UserBean implements Bean<User> {
       ret.add(id.set(model.id));
       ret.add(name.set(model.name));
       ret.add(userName.set(model.userName));
+      ret.add(customFields_anonymId.set(model.customFields.anonymId));
+      ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+      ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(name.name)) ret.add(name.set(model.name));
       if (only.contains(userName.name)) ret.add(userName.set(model.userName));
+      if (only.contains(customFields_anonymId.name)) ret.add(customFields_anonymId.set(model.customFields.anonymId));
+      if (only.contains(customFields_photoUrl.name)) ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+      if (only.contains(customFields_registeredAt.name)) ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -46,6 +62,15 @@ abstract class _UserBean implements Bean<User> {
       }
       if (model.userName != null) {
         ret.add(userName.set(model.userName));
+      }
+      if (model.customFields.anonymId != null) {
+        ret.add(customFields_anonymId.set(model.customFields.anonymId));
+      }
+      if (model.customFields.photoUrl != null) {
+        ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+      }
+      if (model.customFields.registeredAt != null) {
+        ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
       }
     }
 
@@ -57,6 +82,9 @@ abstract class _UserBean implements Bean<User> {
     st.addStr(id.name, primary: true, isNullable: false);
     st.addStr(name.name, isNullable: false);
     st.addStr(userName.name, isNullable: false);
+    st.addInt(customFields_anonymId.name, isNullable: false);
+    st.addStr(customFields_photoUrl.name, isNullable: false);
+    st.addStr(customFields_registeredAt.name, isNullable: false);
     return adapter.createTable(st);
   }
 
@@ -410,6 +438,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
   final timestamp = DateTimeField('timestamp');
   final lastSeen = DateTimeField('last_seen');
   final userId = StrField('user_id');
+  final customFields_anonymId = IntField('custom_fields__anonym_id');
+  final customFields_photoUrl = StrField('custom_fields__photo_url');
+  final customFields_registeredAt = StrField('custom_fields__registered_at');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
@@ -423,6 +454,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         timestamp.name: timestamp,
         lastSeen.name: lastSeen,
         userId.name: userId,
+        customFields_anonymId.name: customFields_anonymId,
+        customFields_photoUrl.name: customFields_photoUrl,
+        customFields_registeredAt.name: customFields_registeredAt,
       };
   ChannelSubscription fromMap(Map map) {
     ChannelSubscription model = ChannelSubscription();
@@ -437,6 +471,10 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     model.timestamp = adapter.parseValue(map['timestamp']);
     model.lastSeen = adapter.parseValue(map['last_seen']);
     model.userId = adapter.parseValue(map['user_id']);
+    model.customFields = CustomFields();
+    model.customFields.anonymId = adapter.parseValue(map['custom_fields__anonym_id']);
+    model.customFields.photoUrl = adapter.parseValue(map['custom_fields__photo_url']);
+    model.customFields.registeredAt = adapter.parseValue(map['custom_fields__registered_at']);
 
     return model;
   }
@@ -457,6 +495,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       ret.add(timestamp.set(model.timestamp));
       ret.add(lastSeen.set(model.lastSeen));
       ret.add(userId.set(model.userId));
+      ret.add(customFields_anonymId.set(model.customFields.anonymId));
+      ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+      ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(alert.name)) ret.add(alert.set(model.alert));
@@ -471,6 +512,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         ret.add(timestamp.set(model.timestamp));
       if (only.contains(lastSeen.name)) ret.add(lastSeen.set(model.lastSeen));
       if (only.contains(userId.name)) ret.add(userId.set(model.userId));
+      if (only.contains(customFields_anonymId.name)) ret.add(customFields_anonymId.set(model.customFields.anonymId));
+      if (only.contains(customFields_photoUrl.name)) ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+      if (only.contains(customFields_registeredAt.name)) ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -505,6 +549,11 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       if (model.userId != null) {
         ret.add(userId.set(model.userId));
       }
+      if (model.customFields != null) {
+        ret.add(customFields_anonymId.set(model.customFields.anonymId));
+        ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
+        ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
+      }
     }
 
     return ret;
@@ -523,6 +572,9 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     st.addDateTime(timestamp.name, isNullable: false);
     st.addDateTime(lastSeen.name, isNullable: true);
     st.addStr(userId.name, isNullable: false);
+    st.addInt(customFields_anonymId.name, isNullable: true);
+    st.addStr(customFields_photoUrl.name, isNullable: true);
+    st.addStr(customFields_registeredAt.name, isNullable: true);
     return adapter.createTable(st);
   }
 
@@ -613,5 +665,118 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       remove.or(this.id.eq(model.id));
     }
     return adapter.remove(remove);
+  }
+}
+
+abstract class _CustomFieldsBean implements Bean<CustomFields> {
+  final anonymId = IntField('anonym_id');
+  final photoUrl = StrField('photo_url');
+  final registeredAt = StrField('registered_at');
+  Map<String, Field> _fields;
+  Map<String, Field> get fields => _fields ??= {
+        anonymId.name: anonymId,
+        photoUrl.name: photoUrl,
+        registeredAt.name: registeredAt,
+      };
+  CustomFields fromMap(Map map) {
+    CustomFields model = CustomFields();
+    model.anonymId = adapter.parseValue(map['anonym_id']);
+    model.photoUrl = adapter.parseValue(map['photo_url']);
+    model.registeredAt = adapter.parseValue(map['registered_at']);
+
+    return model;
+  }
+
+  List<SetColumn> toSetColumns(CustomFields model,
+      {bool update = false, Set<String> only, bool onlyNonNull = false}) {
+    List<SetColumn> ret = [];
+
+    if (only == null && !onlyNonNull) {
+      ret.add(anonymId.set(model.anonymId));
+      ret.add(photoUrl.set(model.photoUrl));
+      ret.add(registeredAt.set(model.registeredAt));
+    } else if (only != null) {
+      if (only.contains(anonymId.name)) ret.add(anonymId.set(model.anonymId));
+      if (only.contains(photoUrl.name)) ret.add(photoUrl.set(model.photoUrl));
+      if (only.contains(registeredAt.name))
+        ret.add(registeredAt.set(model.registeredAt));
+    } else /* if (onlyNonNull) */ {
+      if (model.anonymId != null) {
+        ret.add(anonymId.set(model.anonymId));
+      }
+      if (model.photoUrl != null) {
+        ret.add(photoUrl.set(model.photoUrl));
+      }
+      if (model.registeredAt != null) {
+        ret.add(registeredAt.set(model.registeredAt));
+      }
+    }
+
+    return ret;
+  }
+
+  Future<void> createTable({bool ifNotExists = false}) async {
+    final st = Sql.create(tableName, ifNotExists: ifNotExists);
+    st.addInt(anonymId.name, isNullable: false);
+    st.addStr(photoUrl.name, isNullable: false);
+    st.addStr(registeredAt.name, isNullable: false);
+    return adapter.createTable(st);
+  }
+
+  Future<dynamic> insert(CustomFields model,
+      {bool cascade = false,
+      bool onlyNonNull = false,
+      Set<String> only}) async {
+    final Insert insert = inserter
+        .setMany(toSetColumns(model, only: only, onlyNonNull: onlyNonNull));
+    return adapter.insert(insert);
+  }
+
+  Future<void> insertMany(List<CustomFields> models,
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = models
+        .map((model) =>
+            toSetColumns(model, only: only, onlyNonNull: onlyNonNull))
+        .toList();
+    final InsertMany insert = inserters.addAll(data);
+    await adapter.insertMany(insert);
+    return;
+  }
+
+  Future<dynamic> upsert(CustomFields model,
+      {bool cascade = false,
+      Set<String> only,
+      bool onlyNonNull = false}) async {
+    final Upsert upsert = upserter
+        .setMany(toSetColumns(model, only: only, onlyNonNull: onlyNonNull));
+    return adapter.upsert(upsert);
+  }
+
+  Future<void> upsertMany(List<CustomFields> models,
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = [];
+    for (var i = 0; i < models.length; ++i) {
+      var model = models[i];
+      data.add(
+          toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
+    }
+    final UpsertMany upsert = upserters.addAll(data);
+    await adapter.upsertMany(upsert);
+    return;
+  }
+
+  Future<void> updateMany(List<CustomFields> models,
+      {bool onlyNonNull = false, Set<String> only}) async {
+    final List<List<SetColumn>> data = [];
+    final List<Expression> where = [];
+    for (var i = 0; i < models.length; ++i) {
+      var model = models[i];
+      data.add(
+          toSetColumns(model, only: only, onlyNonNull: onlyNonNull).toList());
+      where.add(null);
+    }
+    final UpdateMany update = updaters.addAll(data, where);
+    await adapter.updateMany(update);
+    return;
   }
 }

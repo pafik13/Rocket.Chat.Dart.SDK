@@ -14,6 +14,10 @@ class User {
   @JsonKey(name: 'username')
   String userName;
 
+  @JsonKey(name: 'customFields')
+  @IgnoreColumn()
+  CustomFields customFields;
+
   @JsonKey(name: 'status')
   @IgnoreColumn()
   String status;
