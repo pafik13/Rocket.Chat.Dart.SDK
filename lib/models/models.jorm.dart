@@ -10,27 +10,17 @@ abstract class _UserBean implements Bean<User> {
   final id = StrField('id');
   final name = StrField('name');
   final userName = StrField('user_name');
-  final customFields_anonymId = IntField('custom_fields__anonym_id');
-  final customFields_photoUrl = StrField('custom_fields__photo_url');
-  final customFields_registeredAt = StrField('custom_fields__registered_at');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
         name.name: name,
         userName.name: userName,
-        customFields_anonymId.name: customFields_anonymId,
-        customFields_photoUrl.name: customFields_photoUrl,
-        customFields_registeredAt.name: customFields_registeredAt,
       };
   User fromMap(Map map) {
     User model = User();
     model.id = adapter.parseValue(map['id']);
     model.name = adapter.parseValue(map['name']);
     model.userName = adapter.parseValue(map['user_name']);
-    model.customFields = CustomFields();
-    model.customFields.anonymId = adapter.parseValue(map['custom_fields__anonym_id']);
-    model.customFields.photoUrl = adapter.parseValue(map['custom_fields__photo_url']);
-    model.customFields.registeredAt = adapter.parseValue(map['custom_fields__registered_at']);
 
     return model;
   }
@@ -43,16 +33,10 @@ abstract class _UserBean implements Bean<User> {
       ret.add(id.set(model.id));
       ret.add(name.set(model.name));
       ret.add(userName.set(model.userName));
-      ret.add(customFields_anonymId.set(model.customFields.anonymId));
-      ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-      ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(name.name)) ret.add(name.set(model.name));
       if (only.contains(userName.name)) ret.add(userName.set(model.userName));
-      if (only.contains(customFields_anonymId.name)) ret.add(customFields_anonymId.set(model.customFields.anonymId));
-      if (only.contains(customFields_photoUrl.name)) ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-      if (only.contains(customFields_registeredAt.name)) ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -62,15 +46,6 @@ abstract class _UserBean implements Bean<User> {
       }
       if (model.userName != null) {
         ret.add(userName.set(model.userName));
-      }
-      if (model.customFields.anonymId != null) {
-        ret.add(customFields_anonymId.set(model.customFields.anonymId));
-      }
-      if (model.customFields.photoUrl != null) {
-        ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-      }
-      if (model.customFields.registeredAt != null) {
-        ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
       }
     }
 
@@ -82,9 +57,6 @@ abstract class _UserBean implements Bean<User> {
     st.addStr(id.name, primary: true, isNullable: false);
     st.addStr(name.name, isNullable: false);
     st.addStr(userName.name, isNullable: false);
-    st.addInt(customFields_anonymId.name, isNullable: false);
-    st.addStr(customFields_photoUrl.name, isNullable: false);
-    st.addStr(customFields_registeredAt.name, isNullable: false);
     return adapter.createTable(st);
   }
 
@@ -181,7 +153,7 @@ abstract class _UserBean implements Bean<User> {
 abstract class _RoomBean implements Bean<Room> {
   final id = StrField('id');
   final name = StrField('name');
-  final fName = StrField('f_name');
+  final displayName = StrField('display_name');
   final type = StrField('type');
   final msgs = IntField('msgs');
   final readOnly = BoolField('read_only');
@@ -197,7 +169,7 @@ abstract class _RoomBean implements Bean<Room> {
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
         name.name: name,
-        fName.name: fName,
+        displayName.name: displayName,
         type.name: type,
         msgs.name: msgs,
         readOnly.name: readOnly,
@@ -214,7 +186,7 @@ abstract class _RoomBean implements Bean<Room> {
     Room model = Room();
     model.id = adapter.parseValue(map['id']);
     model.name = adapter.parseValue(map['name']);
-    model.fName = adapter.parseValue(map['f_name']);
+    model.displayName = adapter.parseValue(map['display_name']);
     model.type = adapter.parseValue(map['type']);
     model.msgs = adapter.parseValue(map['msgs']);
     model.readOnly = adapter.parseValue(map['read_only']);
@@ -237,7 +209,7 @@ abstract class _RoomBean implements Bean<Room> {
     if (only == null && !onlyNonNull) {
       ret.add(id.set(model.id));
       ret.add(name.set(model.name));
-      ret.add(fName.set(model.fName));
+      ret.add(displayName.set(model.displayName));
       ret.add(type.set(model.type));
       ret.add(msgs.set(model.msgs));
       ret.add(readOnly.set(model.readOnly));
@@ -252,7 +224,8 @@ abstract class _RoomBean implements Bean<Room> {
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(name.name)) ret.add(name.set(model.name));
-      if (only.contains(fName.name)) ret.add(fName.set(model.fName));
+      if (only.contains(displayName.name))
+        ret.add(displayName.set(model.displayName));
       if (only.contains(type.name)) ret.add(type.set(model.type));
       if (only.contains(msgs.name)) ret.add(msgs.set(model.msgs));
       if (only.contains(readOnly.name)) ret.add(readOnly.set(model.readOnly));
@@ -276,8 +249,8 @@ abstract class _RoomBean implements Bean<Room> {
       if (model.name != null) {
         ret.add(name.set(model.name));
       }
-      if (model.fName != null) {
-        ret.add(fName.set(model.fName));
+      if (model.displayName != null) {
+        ret.add(displayName.set(model.displayName));
       }
       if (model.type != null) {
         ret.add(type.set(model.type));
@@ -321,7 +294,7 @@ abstract class _RoomBean implements Bean<Room> {
     final st = Sql.create(tableName, ifNotExists: ifNotExists);
     st.addStr(id.name, primary: true, isNullable: false);
     st.addStr(name.name, isNullable: true);
-    st.addStr(fName.name, isNullable: true);
+    st.addStr(displayName.name, isNullable: true);
     st.addStr(type.name, isNullable: false);
     st.addInt(msgs.name, isNullable: true);
     st.addBool(readOnly.name, isNullable: true);
@@ -438,9 +411,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
   final timestamp = DateTimeField('timestamp');
   final lastSeen = DateTimeField('last_seen');
   final userId = StrField('user_id');
-  final customFields_anonymId = IntField('custom_fields__anonym_id');
-  final customFields_photoUrl = StrField('custom_fields__photo_url');
-  final customFields_registeredAt = StrField('custom_fields__registered_at');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
@@ -454,9 +424,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         timestamp.name: timestamp,
         lastSeen.name: lastSeen,
         userId.name: userId,
-        customFields_anonymId.name: customFields_anonymId,
-        customFields_photoUrl.name: customFields_photoUrl,
-        customFields_registeredAt.name: customFields_registeredAt,
       };
   ChannelSubscription fromMap(Map map) {
     ChannelSubscription model = ChannelSubscription();
@@ -471,10 +438,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     model.timestamp = adapter.parseValue(map['timestamp']);
     model.lastSeen = adapter.parseValue(map['last_seen']);
     model.userId = adapter.parseValue(map['user_id']);
-    model.customFields = CustomFields();
-    model.customFields.anonymId = adapter.parseValue(map['custom_fields__anonym_id']);
-    model.customFields.photoUrl = adapter.parseValue(map['custom_fields__photo_url']);
-    model.customFields.registeredAt = adapter.parseValue(map['custom_fields__registered_at']);
 
     return model;
   }
@@ -495,9 +458,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       ret.add(timestamp.set(model.timestamp));
       ret.add(lastSeen.set(model.lastSeen));
       ret.add(userId.set(model.userId));
-      ret.add(customFields_anonymId.set(model.customFields.anonymId));
-      ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-      ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(alert.name)) ret.add(alert.set(model.alert));
@@ -512,9 +472,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         ret.add(timestamp.set(model.timestamp));
       if (only.contains(lastSeen.name)) ret.add(lastSeen.set(model.lastSeen));
       if (only.contains(userId.name)) ret.add(userId.set(model.userId));
-      if (only.contains(customFields_anonymId.name)) ret.add(customFields_anonymId.set(model.customFields.anonymId));
-      if (only.contains(customFields_photoUrl.name)) ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-      if (only.contains(customFields_registeredAt.name)) ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
@@ -549,11 +506,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
       if (model.userId != null) {
         ret.add(userId.set(model.userId));
       }
-      if (model.customFields != null) {
-        ret.add(customFields_anonymId.set(model.customFields.anonymId));
-        ret.add(customFields_photoUrl.set(model.customFields.photoUrl));
-        ret.add(customFields_registeredAt.set(model.customFields.registeredAt));
-      }
     }
 
     return ret;
@@ -572,9 +524,6 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     st.addDateTime(timestamp.name, isNullable: false);
     st.addDateTime(lastSeen.name, isNullable: true);
     st.addStr(userId.name, isNullable: false);
-    st.addInt(customFields_anonymId.name, isNullable: true);
-    st.addStr(customFields_photoUrl.name, isNullable: true);
-    st.addStr(customFields_registeredAt.name, isNullable: true);
     return adapter.createTable(st);
   }
 

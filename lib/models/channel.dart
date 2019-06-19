@@ -18,13 +18,12 @@ class Room {
 
   /// The name of room (unique)
   @JsonKey(name: 'name')
-  // @SqlKey(name: 'name')
   @Column(isNullable: true)
   String name;
 
   @JsonKey(name: 'fname', includeIfNull: false)
   @Column(isNullable: true)
-  String fName;
+  String displayName;
 
 
   @JsonKey(name: 't')

@@ -25,7 +25,7 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
   return Room()
     ..id = json['_id'] as String
     ..name = json['name'] as String
-    ..fName = json['fname'] as String
+    ..displayName = json['fname'] as String
     ..type = json['t'] as String
     ..msgs = json['msgs'] as int
     ..readOnly = json['ro'] as bool
@@ -57,7 +57,7 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
     }
   }
 
-  writeNotNull('fname', instance.fName);
+  writeNotNull('fname', instance.displayName);
   val['t'] = instance.type;
   val['msgs'] = instance.msgs;
   writeNotNull('ro', instance.readOnly);
