@@ -6,20 +6,37 @@ part of models;
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomFields _$CustomFieldsFromJson(Map<String, dynamic> json) {
-  return CustomFields()
-    ..anonymId =
-        json['anonym_id'] == null ? null : _tryParseInt(json['anonym_id'])
-    ..photoUrl = json['photoUrl'] as String
-    ..registeredAt = json['registeredAt'] as String;
+User _$UserFromJson(Map<String, dynamic> json) {
+  return User()
+    ..id = json['_id'] as String
+    ..name = json['name'] as String
+    ..userName = json['username'] as String
+    ..customFields = json['customFields'] == null
+        ? null
+        : CustomFields.fromJson(json['customFields'] as Map<String, dynamic>)
+    ..status = json['status'] as String
+    ..token = json['token'] as String
+    ..tokenExpires = json['tokenExpires'] as int;
 }
 
-Map<String, dynamic> _$CustomFieldsToJson(CustomFields instance) =>
-    <String, dynamic>{
-      'anonym_id': instance.anonymId,
-      'photoUrl': instance.photoUrl,
-      'registeredAt': instance.registeredAt
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'username': instance.userName,
+      'customFields': instance.customFields,
+      'status': instance.status,
+      'token': instance.token,
+      'tokenExpires': instance.tokenExpires
     };
+
+UsernameAndId _$UsernameAndIdFromJson(Map<String, dynamic> json) {
+  return UsernameAndId()
+    ..id = json['_id'] as String
+    ..userName = json['username'] as String;
+}
+
+Map<String, dynamic> _$UsernameAndIdToJson(UsernameAndId instance) =>
+    <String, dynamic>{'_id': instance.id, 'username': instance.userName};
 
 Room _$RoomFromJson(Map<String, dynamic> json) {
   return Room()
@@ -27,22 +44,28 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..displayName = json['fname'] as String
     ..type = json['t'] as String
-    ..msgs = json['msgs'] as int
-    ..readOnly = json['ro'] as bool
-    ..sysMes = json['sysMes'] as bool
+    ..messagesCount = json['msgs'] as int
+    ..isReadOnly = json['ro'] as bool
+    ..hasSystemMessage = json['sysMes'] as bool
     ..isDefault = json['default'] as bool
-    ..broadcast = json['broadcast'] as bool
-    ..timestamp = json['ts'] == null ? null : _fromJsonToDateTime(json['ts'])
+    ..isBroadcast = json['broadcast'] as bool
+    ..isEncrypted = json['encrypted'] as bool
+    ..isMuted = json['muted'] as bool
+    ..createdAt = json['ts'] == null ? null : _fromJsonToDateTime(json['ts'])
     ..updatedAt = json['_updatedAt'] == null
         ? null
         : _fromJsonToDateTime(json['_updatedAt'])
     ..topic = json['topic'] as String
+    ..description = json['description'] as String
+    ..announcement = json['announcement'] as String
     ..user = json['u'] == null
         ? null
         : User.fromJson(json['u'] as Map<String, dynamic>)
     ..lastMessage = json['lastMessage'] == null
         ? null
-        : Message.fromJson(json['lastMessage'] as Map<String, dynamic>);
+        : Message.fromJson(json['lastMessage'] as Map<String, dynamic>)
+    ..lastMessageTimestamp =
+        json['lm'] == null ? null : _fromJsonToDateTime(json['lm']);
 }
 
 Map<String, dynamic> _$RoomToJson(Room instance) {
@@ -59,21 +82,26 @@ Map<String, dynamic> _$RoomToJson(Room instance) {
 
   writeNotNull('fname', instance.displayName);
   val['t'] = instance.type;
-  val['msgs'] = instance.msgs;
-  writeNotNull('ro', instance.readOnly);
-  writeNotNull('sysMes', instance.sysMes);
+  val['msgs'] = instance.messagesCount;
+  writeNotNull('ro', instance.isReadOnly);
+  writeNotNull('sysMes', instance.hasSystemMessage);
   val['default'] = instance.isDefault;
-  writeNotNull('broadcast', instance.broadcast);
-  writeNotNull('ts', instance.timestamp?.toIso8601String());
+  writeNotNull('broadcast', instance.isBroadcast);
+  writeNotNull('encrypted', instance.isEncrypted);
+  writeNotNull('muted', instance.isMuted);
+  writeNotNull('ts', instance.createdAt?.toIso8601String());
   writeNotNull('_updatedAt', instance.updatedAt?.toIso8601String());
   val['topic'] = instance.topic;
+  val['description'] = instance.description;
+  val['announcement'] = instance.announcement;
   writeNotNull('u', instance.user);
   writeNotNull('lastMessage', instance.lastMessage);
+  writeNotNull('lm', instance.lastMessageTimestamp?.toIso8601String());
   return val;
 }
 
-ChannelSubscription _$ChannelSubscriptionFromJson(Map<String, dynamic> json) {
-  return ChannelSubscription()
+Subscription _$SubscriptionFromJson(Map<String, dynamic> json) {
+  return Subscription()
     ..id = json['_id'] as String
     ..alert = json['alert'] as bool
     ..name = json['name'] as String
@@ -93,7 +121,7 @@ ChannelSubscription _$ChannelSubscriptionFromJson(Map<String, dynamic> json) {
         : CustomFields.fromJson(json['customFields'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$ChannelSubscriptionToJson(ChannelSubscription instance) {
+Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
   final val = <String, dynamic>{
     '_id': instance.id,
     'alert': instance.alert,
@@ -118,6 +146,21 @@ Map<String, dynamic> _$ChannelSubscriptionToJson(ChannelSubscription instance) {
   val['customFields'] = instance.customFields;
   return val;
 }
+
+CustomFields _$CustomFieldsFromJson(Map<String, dynamic> json) {
+  return CustomFields()
+    ..anonymId =
+        json['anonym_id'] == null ? null : _tryParseInt(json['anonym_id'])
+    ..photoUrl = json['photoUrl'] as String
+    ..registeredAt = json['registeredAt'] as String;
+}
+
+Map<String, dynamic> _$CustomFieldsToJson(CustomFields instance) =>
+    <String, dynamic>{
+      'anonym_id': instance.anonymId,
+      'photoUrl': instance.photoUrl,
+      'registeredAt': instance.registeredAt
+    };
 
 Pagination _$PaginationFromJson(Map<String, dynamic> json) {
   return Pagination()
@@ -322,35 +365,3 @@ Map<String, dynamic> _$AttachmentFieldToJson(AttachmentField instance) =>
       'title': instance.title,
       'value': instance.value
     };
-
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User()
-    ..id = json['_id'] as String
-    ..name = json['name'] as String
-    ..userName = json['username'] as String
-    ..customFields = json['customFields'] == null
-        ? null
-        : CustomFields.fromJson(json['customFields'] as Map<String, dynamic>)
-    ..status = json['status'] as String
-    ..token = json['token'] as String
-    ..tokenExpires = json['tokenExpires'] as int;
-}
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      '_id': instance.id,
-      'name': instance.name,
-      'username': instance.userName,
-      'customFields': instance.customFields,
-      'status': instance.status,
-      'token': instance.token,
-      'tokenExpires': instance.tokenExpires
-    };
-
-UsernameAndId _$UsernameAndIdFromJson(Map<String, dynamic> json) {
-  return UsernameAndId()
-    ..id = json['_id'] as String
-    ..userName = json['username'] as String;
-}
-
-Map<String, dynamic> _$UsernameAndIdToJson(UsernameAndId instance) =>
-    <String, dynamic>{'_id': instance.id, 'username': instance.userName};

@@ -1,25 +1,25 @@
 part of rest;
 
 abstract class _ClientSubscriptionsMixin implements _ClientWrapper {
-  Future<List<ChannelSubscription>> getSubscriptions() {
-    Completer<List<ChannelSubscription>> completer = Completer();
+  Future<List<Subscription>> getSubscriptions() {
+    Completer<List<Subscription>> completer = Completer();
     http.get('${_getUrl()}/subscriptions.get', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
     }).then((response) {
       _hackResponseHeader(response);
       final rawRoomsList = json.decode(response.body)['update'] as List;
-      final rooms = <ChannelSubscription>[];
+      final rooms = <Subscription>[];
       for (var raw in rawRoomsList) {
-        rooms.add(ChannelSubscription.fromJson(raw));
+        rooms.add(Subscription.fromJson(raw));
       }
       completer.complete(rooms);
     }).catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
-  Future<ChannelSubscription> getSubscriptionsOne(String roomId) {
-    Completer<ChannelSubscription> completer = Completer();
+  Future<Subscription> getSubscriptionsOne(String roomId) {
+    Completer<Subscription> completer = Completer();
     http.get('${_getUrl()}/subscriptions.getOne?roomId=$roomId', headers: {
       'X-User-Id': _auth._id,
       'X-Auth-Token': _auth._token,
@@ -29,7 +29,7 @@ abstract class _ClientSubscriptionsMixin implements _ClientWrapper {
       if (rawBody == null) {
         completer.complete(null);
       } else {
-        final subscription = ChannelSubscription.fromJson(rawBody);
+        final subscription = Subscription.fromJson(rawBody);
         completer.complete(subscription);
       }
     }).catchError((error) => completer.completeError(error));

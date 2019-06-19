@@ -20,7 +20,7 @@ void main() {
           ..email = 'lyubin.p@gmail.com'
           ..password = 'apianon!123');
         
-        final subscriptions = await client.getChannelSubscriptions();
+        final subscriptions = await client.getSubscriptions();
         final bean = ChannelSubscriptionBean(null);
         bean.createTable();
         subscriptions.forEach((val){

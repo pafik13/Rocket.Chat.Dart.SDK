@@ -3,15 +3,17 @@ library models;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 
-part 'custom_fields.dart';
-part 'channel.dart';
-part 'info.dart';
-part 'message.dart';
-part 'models.g.dart';
-part 'models.jorm.dart';
-part 'permissons.dart';
 part 'user.dart';
 part 'user_credentials.dart';
+part 'room.dart';
+part 'subscriptions.dart';
+part 'custom_fields.dart';
+part 'info.dart';
+part 'message.dart';
+part 'permissons.dart';
+
+part 'models.g.dart';
+part 'models.jorm.dart';
 
 bool isNullOrEmtpy(String str){
    return str == null || str == "";
@@ -60,7 +62,7 @@ class RoomBean extends Bean<Room> with _RoomBean {
 }
 
 @GenBean()
-class ChannelSubscriptionBean extends Bean<ChannelSubscription> with _ChannelSubscriptionBean {
+class ChannelSubscriptionBean extends Bean<Subscription> with _ChannelSubscriptionBean {
   ChannelSubscriptionBean(Adapter adapter) : super(adapter);
 
   String get tableName => 'subscriptions';

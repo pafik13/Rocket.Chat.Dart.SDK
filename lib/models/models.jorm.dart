@@ -155,14 +155,19 @@ abstract class _RoomBean implements Bean<Room> {
   final name = StrField('name');
   final displayName = StrField('display_name');
   final type = StrField('type');
-  final msgs = IntField('msgs');
-  final readOnly = BoolField('read_only');
-  final sysMes = BoolField('sys_mes');
+  final messagesCount = IntField('messages_count');
+  final isReadOnly = BoolField('is_read_only');
+  final hasSystemMessage = BoolField('has_system_message');
   final isDefault = BoolField('is_default');
-  final broadcast = BoolField('broadcast');
-  final timestamp = DateTimeField('timestamp');
+  final isBroadcast = BoolField('is_broadcast');
+  final isEncrypted = BoolField('is_encrypted');
+  final isMuted = BoolField('is_muted');
+  final createdAt = DateTimeField('created_at');
   final updatedAt = DateTimeField('updated_at');
   final topic = StrField('topic');
+  final description = StrField('description');
+  final announcement = StrField('announcement');
+  final lastMessageTimestamp = DateTimeField('last_message_timestamp');
   final userId = StrField('user_id');
   final lastMessageId = StrField('last_message_id');
   Map<String, Field> _fields;
@@ -171,14 +176,19 @@ abstract class _RoomBean implements Bean<Room> {
         name.name: name,
         displayName.name: displayName,
         type.name: type,
-        msgs.name: msgs,
-        readOnly.name: readOnly,
-        sysMes.name: sysMes,
+        messagesCount.name: messagesCount,
+        isReadOnly.name: isReadOnly,
+        hasSystemMessage.name: hasSystemMessage,
         isDefault.name: isDefault,
-        broadcast.name: broadcast,
-        timestamp.name: timestamp,
+        isBroadcast.name: isBroadcast,
+        isEncrypted.name: isEncrypted,
+        isMuted.name: isMuted,
+        createdAt.name: createdAt,
         updatedAt.name: updatedAt,
         topic.name: topic,
+        description.name: description,
+        announcement.name: announcement,
+        lastMessageTimestamp.name: lastMessageTimestamp,
         userId.name: userId,
         lastMessageId.name: lastMessageId,
       };
@@ -188,14 +198,20 @@ abstract class _RoomBean implements Bean<Room> {
     model.name = adapter.parseValue(map['name']);
     model.displayName = adapter.parseValue(map['display_name']);
     model.type = adapter.parseValue(map['type']);
-    model.msgs = adapter.parseValue(map['msgs']);
-    model.readOnly = adapter.parseValue(map['read_only']);
-    model.sysMes = adapter.parseValue(map['sys_mes']);
+    model.messagesCount = adapter.parseValue(map['messages_count']);
+    model.isReadOnly = adapter.parseValue(map['is_read_only']);
+    model.hasSystemMessage = adapter.parseValue(map['has_system_message']);
     model.isDefault = adapter.parseValue(map['is_default']);
-    model.broadcast = adapter.parseValue(map['broadcast']);
-    model.timestamp = adapter.parseValue(map['timestamp']);
+    model.isBroadcast = adapter.parseValue(map['is_broadcast']);
+    model.isEncrypted = adapter.parseValue(map['is_encrypted']);
+    model.isMuted = adapter.parseValue(map['is_muted']);
+    model.createdAt = adapter.parseValue(map['created_at']);
     model.updatedAt = adapter.parseValue(map['updated_at']);
     model.topic = adapter.parseValue(map['topic']);
+    model.description = adapter.parseValue(map['description']);
+    model.announcement = adapter.parseValue(map['announcement']);
+    model.lastMessageTimestamp =
+        adapter.parseValue(map['last_message_timestamp']);
     model.userId = adapter.parseValue(map['user_id']);
     model.lastMessageId = adapter.parseValue(map['last_message_id']);
 
@@ -211,14 +227,19 @@ abstract class _RoomBean implements Bean<Room> {
       ret.add(name.set(model.name));
       ret.add(displayName.set(model.displayName));
       ret.add(type.set(model.type));
-      ret.add(msgs.set(model.msgs));
-      ret.add(readOnly.set(model.readOnly));
-      ret.add(sysMes.set(model.sysMes));
+      ret.add(messagesCount.set(model.messagesCount));
+      ret.add(isReadOnly.set(model.isReadOnly));
+      ret.add(hasSystemMessage.set(model.hasSystemMessage));
       ret.add(isDefault.set(model.isDefault));
-      ret.add(broadcast.set(model.broadcast));
-      ret.add(timestamp.set(model.timestamp));
+      ret.add(isBroadcast.set(model.isBroadcast));
+      ret.add(isEncrypted.set(model.isEncrypted));
+      ret.add(isMuted.set(model.isMuted));
+      ret.add(createdAt.set(model.createdAt));
       ret.add(updatedAt.set(model.updatedAt));
       ret.add(topic.set(model.topic));
+      ret.add(description.set(model.description));
+      ret.add(announcement.set(model.announcement));
+      ret.add(lastMessageTimestamp.set(model.lastMessageTimestamp));
       ret.add(userId.set(model.userId));
       ret.add(lastMessageId.set(model.lastMessageId));
     } else if (only != null) {
@@ -227,18 +248,30 @@ abstract class _RoomBean implements Bean<Room> {
       if (only.contains(displayName.name))
         ret.add(displayName.set(model.displayName));
       if (only.contains(type.name)) ret.add(type.set(model.type));
-      if (only.contains(msgs.name)) ret.add(msgs.set(model.msgs));
-      if (only.contains(readOnly.name)) ret.add(readOnly.set(model.readOnly));
-      if (only.contains(sysMes.name)) ret.add(sysMes.set(model.sysMes));
+      if (only.contains(messagesCount.name))
+        ret.add(messagesCount.set(model.messagesCount));
+      if (only.contains(isReadOnly.name))
+        ret.add(isReadOnly.set(model.isReadOnly));
+      if (only.contains(hasSystemMessage.name))
+        ret.add(hasSystemMessage.set(model.hasSystemMessage));
       if (only.contains(isDefault.name))
         ret.add(isDefault.set(model.isDefault));
-      if (only.contains(broadcast.name))
-        ret.add(broadcast.set(model.broadcast));
-      if (only.contains(timestamp.name))
-        ret.add(timestamp.set(model.timestamp));
+      if (only.contains(isBroadcast.name))
+        ret.add(isBroadcast.set(model.isBroadcast));
+      if (only.contains(isEncrypted.name))
+        ret.add(isEncrypted.set(model.isEncrypted));
+      if (only.contains(isMuted.name)) ret.add(isMuted.set(model.isMuted));
+      if (only.contains(createdAt.name))
+        ret.add(createdAt.set(model.createdAt));
       if (only.contains(updatedAt.name))
         ret.add(updatedAt.set(model.updatedAt));
       if (only.contains(topic.name)) ret.add(topic.set(model.topic));
+      if (only.contains(description.name))
+        ret.add(description.set(model.description));
+      if (only.contains(announcement.name))
+        ret.add(announcement.set(model.announcement));
+      if (only.contains(lastMessageTimestamp.name))
+        ret.add(lastMessageTimestamp.set(model.lastMessageTimestamp));
       if (only.contains(userId.name)) ret.add(userId.set(model.userId));
       if (only.contains(lastMessageId.name))
         ret.add(lastMessageId.set(model.lastMessageId));
@@ -255,29 +288,44 @@ abstract class _RoomBean implements Bean<Room> {
       if (model.type != null) {
         ret.add(type.set(model.type));
       }
-      if (model.msgs != null) {
-        ret.add(msgs.set(model.msgs));
+      if (model.messagesCount != null) {
+        ret.add(messagesCount.set(model.messagesCount));
       }
-      if (model.readOnly != null) {
-        ret.add(readOnly.set(model.readOnly));
+      if (model.isReadOnly != null) {
+        ret.add(isReadOnly.set(model.isReadOnly));
       }
-      if (model.sysMes != null) {
-        ret.add(sysMes.set(model.sysMes));
+      if (model.hasSystemMessage != null) {
+        ret.add(hasSystemMessage.set(model.hasSystemMessage));
       }
       if (model.isDefault != null) {
         ret.add(isDefault.set(model.isDefault));
       }
-      if (model.broadcast != null) {
-        ret.add(broadcast.set(model.broadcast));
+      if (model.isBroadcast != null) {
+        ret.add(isBroadcast.set(model.isBroadcast));
       }
-      if (model.timestamp != null) {
-        ret.add(timestamp.set(model.timestamp));
+      if (model.isEncrypted != null) {
+        ret.add(isEncrypted.set(model.isEncrypted));
+      }
+      if (model.isMuted != null) {
+        ret.add(isMuted.set(model.isMuted));
+      }
+      if (model.createdAt != null) {
+        ret.add(createdAt.set(model.createdAt));
       }
       if (model.updatedAt != null) {
         ret.add(updatedAt.set(model.updatedAt));
       }
       if (model.topic != null) {
         ret.add(topic.set(model.topic));
+      }
+      if (model.description != null) {
+        ret.add(description.set(model.description));
+      }
+      if (model.announcement != null) {
+        ret.add(announcement.set(model.announcement));
+      }
+      if (model.lastMessageTimestamp != null) {
+        ret.add(lastMessageTimestamp.set(model.lastMessageTimestamp));
       }
       if (model.userId != null) {
         ret.add(userId.set(model.userId));
@@ -296,14 +344,19 @@ abstract class _RoomBean implements Bean<Room> {
     st.addStr(name.name, isNullable: true);
     st.addStr(displayName.name, isNullable: true);
     st.addStr(type.name, isNullable: false);
-    st.addInt(msgs.name, isNullable: true);
-    st.addBool(readOnly.name, isNullable: true);
-    st.addBool(sysMes.name, isNullable: true);
+    st.addInt(messagesCount.name, isNullable: false);
+    st.addBool(isReadOnly.name, isNullable: true);
+    st.addBool(hasSystemMessage.name, isNullable: true);
     st.addBool(isDefault.name, isNullable: true);
-    st.addBool(broadcast.name, isNullable: true);
-    st.addDateTime(timestamp.name, isNullable: true);
+    st.addBool(isBroadcast.name, isNullable: true);
+    st.addBool(isEncrypted.name, isNullable: true);
+    st.addBool(isMuted.name, isNullable: true);
+    st.addDateTime(createdAt.name, isNullable: false);
     st.addDateTime(updatedAt.name, isNullable: false);
     st.addStr(topic.name, isNullable: true);
+    st.addStr(description.name, isNullable: true);
+    st.addStr(announcement.name, isNullable: true);
+    st.addDateTime(lastMessageTimestamp.name, isNullable: true);
     st.addStr(userId.name, isNullable: false);
     st.addStr(lastMessageId.name, isNullable: false);
     return adapter.createTable(st);
@@ -399,7 +452,7 @@ abstract class _RoomBean implements Bean<Room> {
   }
 }
 
-abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
+abstract class _ChannelSubscriptionBean implements Bean<Subscription> {
   final id = StrField('id');
   final alert = BoolField('alert');
   final name = StrField('name');
@@ -425,8 +478,8 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
         lastSeen.name: lastSeen,
         userId.name: userId,
       };
-  ChannelSubscription fromMap(Map map) {
-    ChannelSubscription model = ChannelSubscription();
+  Subscription fromMap(Map map) {
+    Subscription model = Subscription();
     model.id = adapter.parseValue(map['id']);
     model.alert = adapter.parseValue(map['alert']);
     model.name = adapter.parseValue(map['name']);
@@ -442,7 +495,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return model;
   }
 
-  List<SetColumn> toSetColumns(ChannelSubscription model,
+  List<SetColumn> toSetColumns(Subscription model,
       {bool update = false, Set<String> only, bool onlyNonNull = false}) {
     List<SetColumn> ret = [];
 
@@ -527,7 +580,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return adapter.createTable(st);
   }
 
-  Future<dynamic> insert(ChannelSubscription model,
+  Future<dynamic> insert(Subscription model,
       {bool cascade = false,
       bool onlyNonNull = false,
       Set<String> only}) async {
@@ -536,7 +589,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return adapter.insert(insert);
   }
 
-  Future<void> insertMany(List<ChannelSubscription> models,
+  Future<void> insertMany(List<Subscription> models,
       {bool onlyNonNull = false, Set<String> only}) async {
     final List<List<SetColumn>> data = models
         .map((model) =>
@@ -547,7 +600,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return;
   }
 
-  Future<dynamic> upsert(ChannelSubscription model,
+  Future<dynamic> upsert(Subscription model,
       {bool cascade = false,
       Set<String> only,
       bool onlyNonNull = false}) async {
@@ -556,7 +609,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return adapter.upsert(upsert);
   }
 
-  Future<void> upsertMany(List<ChannelSubscription> models,
+  Future<void> upsertMany(List<Subscription> models,
       {bool onlyNonNull = false, Set<String> only}) async {
     final List<List<SetColumn>> data = [];
     for (var i = 0; i < models.length; ++i) {
@@ -569,7 +622,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return;
   }
 
-  Future<int> update(ChannelSubscription model,
+  Future<int> update(Subscription model,
       {bool cascade = false,
       bool associate = false,
       Set<String> only,
@@ -580,7 +633,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return adapter.update(update);
   }
 
-  Future<void> updateMany(List<ChannelSubscription> models,
+  Future<void> updateMany(List<Subscription> models,
       {bool onlyNonNull = false, Set<String> only}) async {
     final List<List<SetColumn>> data = [];
     final List<Expression> where = [];
@@ -595,7 +648,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return;
   }
 
-  Future<ChannelSubscription> find(String id,
+  Future<Subscription> find(String id,
       {bool preload = false, bool cascade = false}) async {
     final Find find = finder.where(this.id.eq(id));
     return await findOne(find);
@@ -606,7 +659,7 @@ abstract class _ChannelSubscriptionBean implements Bean<ChannelSubscription> {
     return adapter.remove(remove);
   }
 
-  Future<int> removeMany(List<ChannelSubscription> models) async {
+  Future<int> removeMany(List<Subscription> models) async {
 // Return if models is empty. If this is not done, all records will be removed!
     if (models == null || models.isEmpty) return 0;
     final Remove remove = remover;

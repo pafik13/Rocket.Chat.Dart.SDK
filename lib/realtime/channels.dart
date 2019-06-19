@@ -30,14 +30,14 @@ abstract class _ClientChannelsMixin implements _DdpClientWrapper {
     return completer.future;
   }
 
-  Future<List<ChannelSubscription>> getChannelSubscriptions() {
-    Completer<List<ChannelSubscription>> completer = Completer();
+  Future<List<Subscription>> getSubscriptions() {
+    Completer<List<Subscription>> completer = Completer();
     this._getDdpClient().call('subscriptions/get', [
       <String, dynamic>{'\$date': 0}
     ]).then((call) {
-      List<ChannelSubscription> subscriptions = [];
+      List<Subscription> subscriptions = [];
       (call.reply['update'] as List<dynamic>).forEach((s) => subscriptions.add(
-          ChannelSubscription()
+          Subscription()
             ..id = '${s['_id']}'
             ..alert = s['alert']
             ..name = '${s['name']}'
